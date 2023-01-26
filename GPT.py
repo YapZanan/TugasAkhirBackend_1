@@ -67,6 +67,7 @@ def generate():
     response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000')
     return response
 
+
 @app.route('/language', methods=['GET'])
 def getlanguages():
     return jsonify(list(flores_codes.keys()))
