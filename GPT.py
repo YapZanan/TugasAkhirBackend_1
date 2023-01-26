@@ -1,6 +1,5 @@
 import time
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, pipeline
-from flores200_codes import flores_codes
 from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS, cross_origin
 app = Flask(__name__)
@@ -10,7 +9,7 @@ CORS(app, support_credentials=True)
 def load_models():
     # build model and tokenizera
     model_name_dict = {
-        'nllb-distilled-600M': 'NLLB/Model',
+        'nllb-distilled-600M': 'GPT/Model',
         # 'nllb-1.3B': 'facebook/nllb-200-1.3B',
         #   'nllb-distilled-1.3B': 'model/nllb-distilled-1.3B',
         # 'nllb-3.3B': 'facebook/nllb-200-3.3B',
@@ -28,7 +27,7 @@ def load_models():
     return model_dict
 
 
-def translation(source, target, text):
+def generation(source, target, text):
     if len(model_dict) == 2:
         model_name = 'nllb-distilled-600M'
 
@@ -55,9 +54,9 @@ def translation(source, target, text):
 
 
 
-@app.route('/translate', methods=['POST'])
+@app.route('/generate', methods=['POST'])
 @cross_origin()
-def translate():
+def generate():
     data = request.get_json()
     source = data['source']
     target = data['target']
